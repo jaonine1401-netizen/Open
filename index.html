@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบเปิดบิลผ่อนสินค้า</title>
+  <style>
+    body {
+      font-family: 'Sarabun', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f4f5f7;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      max-width: 480px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .payment-info {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+    }
+    .payment-title {
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 8px;
+      color: #111;
+    }
+    .warning-text {
+      color: #dc3545;
+      font-weight: bold;
+      font-size: 13px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed #dc3545;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #333;
+      font-size: 14px;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    input[type="file"] {
+      display: block;
+      margin-top: 4px;
+    }
+    .btn-submit {
+      width: 100%;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-submit:hover {
+      background-color: #218838;
+    }
+    .summary-card {
+      background-color: #e9ecef;
+      padding: 20px;
+      border-radius: 8px;
+      color: #333;
+    }
+    .summary-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+    .summary-item {
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+    .summary-item strong {
+      display: inline-block;
+      width: 120px;
+    }
+    .status-text {
+      color: #28a745;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="formContainer">
+    <h3 style="text-align: center; margin-top:0;">เปิดบิลผ่อนสินค้า</h3>
+    
+    <div class="payment-info">
+      <div class="payment-title">💳 ข้อมูลการชำระเงิน</div>
+      <div><strong>ชื่อบัญชี:</strong> นางสาวกรองทอง สรวยงาม</div>
+      <div><strong>ธนาคาร:</strong> ไทยพาณิชย์</div>
+      <div><strong>เลขบัญชี:</strong> 8214141484</div>
+      <div style="margin-top: 4px;"><strong>TrueMoney Wallet:</strong> 0999671158</div>
+      
+      <div class="warning-text">
+        ⚠️ โอนตามนี้เท่านั้น หากโอนเข้าบัญชีนอกเหนือจากที่แจ้งไปขอไม่รับผิดชอบทุกกรณี!<br>
+        ⚠️ หากทำการโอนหรือชำระเงินเสร็จสิ้นแล้ว ขอสงวนการคืนเงินทุกกรณี!
+      </div>
+    </div>
+
+    <form id="installmentForm">
+      <div class="form-group">
+        <label>1. สินค้าที่เปิดบิล (พิมพ์ชื่อสินค้าและรายละเอียด)</label>
+        <input type="text" id="product" placeholder="เช่น สายชาร์จ Usb c-L 1 ชิ้น" required>
+      </div>
+
+      <div class="form-group">
+        <label>จำนวนยอดเงินที่โอน / ยอดที่เปิดบิล (บาท)</label>
+        <input type="number" id="amount" placeholder="เช่น 580" required>
+      </div>
+
+      <div class="form-group">
+        <label>ชื่อ-นามสกุล ผู้รับ</label>
+        <input type="text" id="fullName" placeholder="ชื่อ-นามสกุล" required>
+      </div>
+
+      <div class="form-group">
+        <label>ชื่อเล่น</label>
+        <input type="text" id="nickName" placeholder="เช่น นัท" required>
+      </div>
+
+      <div class="form-group">
+        <label>อายุ</label>
+        <input type="number" id="age" placeholder="เช่น 25" required>
+      </div>
+
+      <div class="form-group">
+        <label>อัพโหลดสลิปโอนเงิน (ถ้ามี)</label>
+        <input type="file" id="fileInput" accept="image/*">
+      </div>
+
+      <button type="button" class="btn-submit" onclick="submitForm()">ยืนยันการเปิดบิล</button>
+    </form>
+  </div>
+
+  <!-- หน้าแสดงผลสรุป -->
+  <div class="card" id="summaryContainer" style="display: none;">
+    <div class="summary-card">
+      <div class="summary-title">เปิดบิลสำเร็จ! สรุปรายการของคุณ</div>
+      
+      <div class="summary-item"><strong>รหัสประจำตัว:</strong> <span id="resOrderId"></span></div>
+      <div class="summary-item"><strong>ชื่อผู้รับ:</strong> <span id="resName"></span> (<span id="resNickName"></span>)</div>
+      <div class="summary-item"><strong>อายุ:</strong> <span id="resAge"></span> ปี</div>
+      <div class="summary-item"><strong>สินค้า:</strong> <span id="resProduct"></span></div>
+      <div class="summary-item"><strong>ยอดเงิน:</strong> <span id="resAmount"></span> บาท</div>
+      <div class="summary-item"><strong>การจัดส่ง:</strong> ชำระแล้ว (โอนเงิน)</div>
+      
+      <div class="status-text">สถานะ: บันทึกคำสั่งซื้อเรียบร้อย</div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIvc0QLgl5VNY_PogGtkn_LFmokBsyhVC5BDIm0Ebyv9RSQqMQ6Rloc478afyHiSU3/exec";
+
+    function submitForm() {
+      const fullName = document.getElementById('fullName').value;
+      const product = document.getElementById('product').value;
+      const amount = document.getElementById('amount').value;
+      const nickName = document.getElementById('nickName').value;
+      const age = document.getElementById('age').value;
+      const fileInput = document.getElementById('fileInput');
+
+      if (!fullName || !product || !amount) {
+        alert('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน');
+        return;
+      }
+
+      const submitBtn = document.querySelector('.btn-submit');
+      submitBtn.innerText = 'กำลังบันทึกข้อมูล...';
+      submitBtn.disabled = true;
+
+      // สร้างรหัส URD เพียงครั้งเดียวหน้าบ้าน
+      const orderId = "URD" + Math.floor(1000 + Math.random() * 9000);
+      const file = fileInput.files[0];
+
+      function sendData(fileData) {
+        const payload = {
+          orderId: orderId,
+          fullName: fullName,
+          nickName: nickName,
+          age: age,
+          product: product,
+          amount: amount,
+          fileData: fileData || null
+        };
+
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify(payload)
+        })
+        .then(() => {
+          document.getElementById('formContainer').style.display = 'none';
+          document.getElementById('summaryContainer').style.display = 'block';
+
+          // แสดงรหัสเดียวกับที่ส่งไปบันทึกลง Google Sheet
+          document.getElementById('resOrderId').innerText = orderId;
+          document.getElementById('resName').innerText = fullName;
+          document.getElementById('resNickName').innerText = nickName;
+          document.getElementById('resAge').innerText = age;
+          document.getElementById('resProduct').innerText = product;
+          document.getElementById('resAmount').innerText = amount;
+        })
+        .catch(error => {
+          alert('เกิดข้อผิดพลาด: ' + error);
+          submitBtn.innerText = 'ยืนยันการเปิดบิล';
+          submitBtn.disabled = false;
+        });
+      }
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const content = e.target.result;
+          const fileData = {
+            filename: file.name,
+            mimeType: file.type,
+            bytes: content.split(',')[1]
+          };
+          sendData(fileData);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        sendData(null);
+      }
+    }
+  </script>
+</body>
+</html>
